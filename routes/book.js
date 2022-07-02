@@ -21,14 +21,14 @@ router.get("/list/:id", (req, res) => {
     }
   }
   if (state === false) {
-    res.status(404).send("<h1>Livro não encontrado</h1>");
+    res.status(404).send("<h1>Book not found</h1>");
   }
 });
 
 router.post("/add", jsonParser, (req, res) => {
   let newInformationToAdd = { id: books.length + 1, nome: req.body.nome };
   books.push(newInformationToAdd);
-  res.json({ msg: "Livro adicionado com sucesso" });
+  res.json({ msg: "Book has been added with success" });
 });
 
 router.put("/update/:id", jsonParser, (req, res) => {
@@ -39,17 +39,21 @@ router.put("/update/:id", jsonParser, (req, res) => {
       books[i].nome = information;
     }
   }
-  res.send({ msg: "Livro atualizado com sucesso" });
+  res.send({ msg: "Book has been updated with success" });
 });
 
 router.delete("/delete/:id", jsonParser, (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
   for (let i = 0; i < books.length; i++) {
     if (i + 1 === parseInt(id)) {
       books.splice(i, 1);
     }
   }
-res.send(`Livro do id ${id} foi deletado`)
+  // reorganizing the ids of the array
+  for (let i = 0; i < books.length; i++) {
+    books[i].id = i + 1;
+  }
+  res.send({ msg: `book of id ${id} has been deleted` });
 });
 
 module.exports = router;
